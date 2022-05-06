@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://ogp.me/ns/fb"
+    class="en js csstransforms csstransforms3d csstransitions">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title> POC - The Level Group</title>
+    <!-- Kentico Custom elements API-->
+    <link rel="stylesheet" href="custom-element.css" />
+    <script src="https://app.kontent.ai/js-api/custom-element/v1/custom-element.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+
+    <script type="text/javascript" src="https://unpkg.com/rxjs@6.4.0/bundles/rxjs.umd.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@kentico/kontent-delivery/_bundles/kontent-delivery.browser.umd.min.js"></script>
+
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.410.0.min.js"></script>
+    <style>
+
+    </style>
+
+
+</head>
+
+<body>
+    <br />
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="ui sixteen column">
+                <p id="result"></p>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <script>
+        $(document).ready(function () {
+            CustomElement.setHeight(150);
+            CustomElement.getElementValue("rich_text_content", (value) => {
+                    checkheadings(value);
+            });
+            CustomElement.observeElementChanges(["rich_text_content"], (changedElementCodenames) => {
+                CustomElement.getElementValue("rich_text_content", (value) => {
+                    checkheadings(value);
+                });
+                console.log("something changed")
+                console.log(changedElementCodenames[0])
+            });
+        });
+
+        function getHeadingLevel(heading) {
+            return parseInt(heading.tagName[1]);
+        }
+
+        function createError(expectedHeadingLevel, previousHeadingLevel, previousHeadingText, currentHeadingLevel, currentHeadingText) {
+            var err = {};
+            err.previousHeadingLevel = (previousHeadingLevel == 0) ? "no previous headings" : previousHeadingLevel;
+            err.seenHeadingLevel = currentHeadingLevel;
+            err.expectedHeadingLevel = expectedHeadingLevel;
+            err.seenHeadingText = currentHeadingText;
+            err.previousHeadingText = previousHeadingText;
+
+            return err;
+        }
+
+        function checkheadings(container) {
+            container = container || 'body';
+            var cont = document.querySelector(container);
+            var headings = cont.querySelectorAll("h1, h2, h3, h4, h5, h6");
+            var errors = [];
+            var previousHeadingLevel = 0;
+            var previousHeadingText = "Document Start - no headings yet";
+
+            if (headings.length < 1) {
+                errors.push("no headings detected");
+                return errors;
+            }
+
+            for (x = 0; x < headings.length; x++) {
+                var currentHeadingLevel = getHeadingLevel(headings[x]);
+                var currentHeadingText = headings[x].textContent;
+                var expectedHeadingLevel = previousHeadingLevel + 1;
+                if (currentHeadingLevel > expectedHeadingLevel) {
+                    //errors.push("H" + expectedLevel + " skipped. Previous correct heading was H" + previousHeadingLevel + " containing text:" + previousHeadingText + ". Unexpected H" + currentHeadingLevel + " text: " + currentHeadingText);
+
+                    errors.push(createError(expectedHeadingLevel, previousHeadingLevel, previousHeadingText, currentHeadingLevel, currentHeadingText));
+
+                    continue;
+                }
+                previousHeadingLevel = currentHeadingLevel;
+                previousHeadingText = currentHeadingText;
+            }
+            
+            /*document.getElementById('result').innerHTML = "Speech ready to play.";*/
+            return result;
+        }
+
+    </script>
+</body>
+
+</html>
