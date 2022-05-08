@@ -54,6 +54,10 @@
             return parseInt(heading.tagName[1]);
         }
 
+        
+        // Initializes the Delivery JS SDK
+        const Kk = window['kontentDelivery'];
+
         const deliveryClient = new Kk.DeliveryClient({
             projectId: '5ba2a1a1-ad54-0100-77c6-5fd2886014f0',
             previewApiKey: 'ew0KICAiYWxnIjogIkhTMjU2IiwNCiAgInR5cCI6ICJKV1QiDQp9.ew0KICAianRpIjogIjNiMjE3MGM4OWVjYzRlY2FhY2ExODk5ODY0MGIwMmYyIiwNCiAgImlhdCI6ICIxNjQ5ODYzODU4IiwNCiAgImV4cCI6ICIxOTk1NDYzODU4IiwNCiAgInZlciI6ICIxLjAuMCIsDQogICJwcm9qZWN0X2lkIjogIjViYTJhMWExYWQ1NDAxMDA3N2M2NWZkMjg4NjAxNGYwIiwNCiAgImF1ZCI6ICJwcmV2aWV3LmRlbGl2ZXIua2VudGljb2Nsb3VkLmNvbSINCn0.9LXtA1L3KlHI_Elv-lJCimcHZqybNddW8PgsQVIimVQ',
