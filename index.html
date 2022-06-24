@@ -133,8 +133,8 @@
             }
 
             result = ""
-            errors.forEach(error => result += 
-                "Error" + i + "</br>" +
+            errors.forEach((error, i) => result += 
+                "Error" + (i + 1) + "</br>" +
                 "Error on : H" +error.seenHeadingLevel + ": "  + seenHeadingText +  "</br>"  +
                 "Expected heading level: H" +error.expectedHeadingLevel +  "</br>" +
                 "Previous heading: H" +error.previousHeadingLevel + ": "  + seenHeadingText +  "</br>" 
