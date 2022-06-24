@@ -58,7 +58,7 @@
                 // Retrieves the landing page from your project
                 deliveryClient
                     .item(_context.item.codename)
-                    .elementsParameter(elementName)
+                    .elementsParameter(["content"])
                     .toPromise()
                     .then(response => {
                         processData(response)
@@ -70,10 +70,10 @@
                     document.getElementById('result').innerHTML = checkheadings();
                     console.log(checkheadings())
                 }
-                CustomElement.observeElementChanges(elementName, (changedElementCodenames) => {
+                CustomElement.observeElementChanges(["content"], (changedElementCodenames) => {
                     deliveryClient
                         .item(_context.item.codename)
-                        .elementsParameter(elementName)
+                        .elementsParameter(["content"])
                         .toPromise()
                         .then(response => {
                             processData(response)
