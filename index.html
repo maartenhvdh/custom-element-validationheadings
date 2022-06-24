@@ -37,6 +37,15 @@
         var h1included = false;
 
         $(document).ready(function () {
+            function processData(response) {
+                    const text = response.item.content.value;
+                    document.getElementById('content').innerHTML = text;
+                    document.getElementById('result').innerHTML = checkheadings();
+                    
+                const height = Math.ceil($("result").height());
+                CustomElement.setHeight(height);
+                }
+                
             CustomElement.init((element, _context) => {
                 config = element.config || {};
                 elementName = config.fieldname;
@@ -61,17 +70,9 @@
                         processData(response)
                     });
 
-                function processData(response) {
-                    const text = response.item.content.value;
-                    document.getElementById('content').innerHTML = text;
-                    document.getElementById('result').innerHTML = checkheadings();
-                    
-                const height = Math.ceil($("result").height());
-                CustomElement.setHeight(height);
-                }
+
 
                 CustomElement.observeElementChanges(["content"], (changedElementCodenames) => {
-                    console.log("element changed")
                     deliveryClient
                         .item(_context.item.codename)
                         .elementsParameter(["content"])
@@ -80,14 +81,6 @@
                             processData(response)
                         });
 
-                    function processData(response) {
-                        const text = response.item.content.value;
-                        document.getElementById('content').innerHTML = text;
-                        document.getElementById('result').innerHTML = checkheadings();
-
-                        const height = Math.ceil($("html").height());
-                        CustomElement.setHeight(height);
-                    }
                 });
             });
         });
