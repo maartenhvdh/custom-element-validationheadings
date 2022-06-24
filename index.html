@@ -135,9 +135,9 @@
             result = ""
             errors.forEach((error, i) => result += 
                 "Error" + (i + 1) + "</br>" +
-                "Error on : H" +error.seenHeadingLevel + ": "  + seenHeadingText +  "</br>"  +
+                "Error on : H" +error.seenHeadingLevel + ": "  + error.seenHeadingText +  "</br>"  +
                 "Expected heading level: H" +error.expectedHeadingLevel +  "</br>" +
-                "Previous heading: H" +error.previousHeadingLevel + ": "  + seenHeadingText +  "</br>" 
+                "Previous heading: H" +error.previousHeadingLevel + ": "  + error.seenHeadingText +  "</br>" 
                 );
 
             if (result == "") {
