@@ -35,24 +35,61 @@
 
     <script>
         var h1included = false;
+
         $(document).ready(function () {
+
             CustomElement.init((element, _context) => {
                 config = element.config || {};
                 elementName = config.fieldname;
                 h1included = config.h1included;
+                previewApiKey = config.previewApiKey;
 
                 CustomElement.setHeight(150);
+
+                const Kk = window['kontentDelivery'];
+                const deliveryClient = new Kk.DeliveryClient({
+                    projectId: _context.projectId,
+                    previewApiKey: previewApiKey,
+                    globalQueryConfig: {
+                        usePreviewMode: true, // Queries the Delivery Preview API.
+                        waitForLoadingNewContent: true
+                    }
+                });
+                // Retrieves the landing page from your project
+                deliveryClient
+                    .item(_context.item.codename)
+                    .elementsParameter(elementName)
+                    .toPromise()
+                    .then(response => {
+                        processData(response)
+                    });
+
+                function processData(response) {
+                    const text = response.item.content.value;
+                    document.getElementById('content').innerHTML = text;
+                    document.getElementById('result').innerHTML = checkheadings();
+                    console.log(checkheadings())
+                }
+                CustomElement.observeElementChanges(elementName, (changedElementCodenames) => {
+                    deliveryClient
+                        .item(_context.item.codename)
+                        .elementsParameter(elementName)
+                        .toPromise()
+                        .then(response => {
+                            processData(response)
+                        });
+
+                    function processData(response) {
+                        const text = response.item.content.value;
+                        document.getElementById('content').innerHTML = text;
+                        console.log(checkheadings())
+                    }
+                });
+
                 CustomElement.getElementValue(elementName, (value) => {
                     textEntry.value = value
                     speakText();
                 });
-                CustomElement.observeElementChanges([elementName], (changedElementCodenames) => {
-                    CustomElement.getElementValue(elementName, (value) => {
-                        content.value = value                        
-                        content.value = checkheadings();
-                    });
-                });
-
             });
         });
 
@@ -72,23 +109,22 @@
         }
 
         function printObj(obj) {
-                var string = '';  
-                for(var prop in obj) {
-                    if(typeof obj[prop] == 'string') {
-                        string+= prop + ': ' + obj[prop]+'; </br>';
-                    }
-                    else {
-                        string+= prop + ': { </br>' + obj[prop] + '}';
-                    }
-                }  
-                return string;
+            var string = '';
+            for (var prop in obj) {
+                if (typeof obj[prop] == 'string') {
+                    string += prop + ': ' + obj[prop] + '; </br>';
+                }
+                else {
+                    string += prop + ': { </br>' + obj[prop] + '}';
+                }
             }
+            return string;
+        }
 
         function checkheadings() {
             var cont = document.querySelector('#content');
             var headings = cont.querySelectorAll("h1, h2, h3, h4, h5, h6");
             var errors = [];
-            var previousHeadingLevel = h1included ? 0 : 1;
             var previousHeadingText = "Document Start - no headings yet";
 
             if (headings.length < 1) {
@@ -108,11 +144,10 @@
                 previousHeadingText = currentHeadingText;
             }
 
-            result =  ""          
+            result = ""
             errors.forEach(error => result += printObj(error));
-            
-            if (result ==  "")
-            {
+
+            if (result == "") {
                 result = "No accessibility issues found"
                 CustomElement.setValue("Validated - No headings issues");
             }
@@ -120,4 +155,5 @@
         }
     </script>
 </body>
+
 </html>
