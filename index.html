@@ -132,7 +132,7 @@
                 previousHeadingText = currentHeadingText;
             }
 
-            result = ""
+            result = "<strong>Accessibility issues found</strong></br>"
             errors.forEach((error, i) => result += 
                 "Error" + (i + 1) + "</br>" +
                 "Error on : H" +error.seenHeadingLevel + ": "  + error.seenHeadingText +  "</br>"  +
@@ -145,7 +145,6 @@
                 CustomElement.setValue("Validated - No headings issues");
             }
             else {                
-                result = "<strong>Accessibility issues found</strong></br>"
                 CustomElement.setValue(null);
             }
             return result;
