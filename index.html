@@ -27,11 +27,12 @@
     <div class="ui container">
         <div class="ui grid">
             <div class="ui sixteen column">
+                <div id="content">No content found</div>
                 <p id="result"></p>
             </div>
         </div>
     </div>
-    
+
     <script>
         const Kk = window['kontentDelivery'];
         const deliveryClient = new Kk.DeliveryClient({
@@ -54,21 +55,22 @@
                 });
 
             function processData(response) {
-                const text = response.item.rich_text_content.value;
+                const text = response.item.content.value;
                 checkheadings(text)
             }
-            CustomElement.observeElementChanges(["rich_text_content"], (changedElementCodenames) => {
+            CustomElement.observeElementChanges(["content"], (changedElementCodenames) => {
                 deliveryClient
-                    .item("this_is_wcag_headings_test")
-                    .elementsParameter(['rich_text_content'])
+                    .item("top_5_reasons_why_you_should_be_riding_a_bike_righ")
+                    .elementsParameter(['content'])
                     .toPromise()
                     .then(response => {
                         processData(response)
                     });
 
                 function processData(response) {
-                    const text = response.item.rich_text_content.value;
-                    checkheadings(text)
+                    const text = response.item.content.value;
+                    console.log(text)
+                    document.getElementById('content').innerHTML = text;
                 }
             });
         });
@@ -90,7 +92,7 @@
 
         function checkheadings(container) {
             container = container || 'body';
-            var cont = document.querySelector(container);
+            var cont = document.querySelector('#content');
             var headings = cont.querySelectorAll("h1, h2, h3, h4, h5, h6");
             var errors = [];
             var previousHeadingLevel = 0;
