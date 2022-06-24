@@ -43,8 +43,8 @@
                 elementName = config.fieldname;
                 h1included = config.h1included;
                 previewApiKey = config.previewApiKey;
-
-                CustomElement.setHeight(150);
+                const height = Math.ceil($("html").height());
+                CustomElement.setHeight(height);
 
                 const Kk = window['kontentDelivery'];
                 const deliveryClient = new Kk.DeliveryClient({
@@ -68,8 +68,8 @@
                     const text = response.item.content.value;
                     document.getElementById('content').innerHTML = text;
                     document.getElementById('result').innerHTML = checkheadings();
-                    console.log(checkheadings())
                 }
+
                 CustomElement.observeElementChanges(["content"], (changedElementCodenames) => {
                     deliveryClient
                         .item(_context.item.codename)
@@ -82,13 +82,11 @@
                     function processData(response) {
                         const text = response.item.content.value;
                         document.getElementById('content').innerHTML = text;
-                        console.log(checkheadings())
-                    }
-                });
+                        document.getElementById('result').innerHTML = checkheadings();
 
-                CustomElement.getElementValue(elementName, (value) => {
-                    textEntry.value = value
-                    speakText();
+                        const height = Math.ceil($("html").height());
+                        CustomElement.setHeight(height);
+                    }
                 });
             });
         });
@@ -112,7 +110,7 @@
             var cont = document.querySelector('#content');
             var headings = cont.querySelectorAll("h1, h2, h3, h4, h5, h6");
             var errors = [];
-            var previousHeadingLevel = h1included ? 1 :  0;
+            var previousHeadingLevel = h1included ? 1 : 0;
             var previousHeadingText = "No headings yet";
 
             if (headings.length < 1) {
@@ -133,18 +131,18 @@
             }
 
             result = "<strong>Accessibility issues found</strong></br>"
-            errors.forEach((error, i) => result += 
-                "Error" + (i + 1) + "</br>" +
-                "Error on : H" +error.seenHeadingLevel + ": "  + error.seenHeadingText +  "</br>"  +
-                "Expected heading level: H" +error.expectedHeadingLevel +  "</br>" +
-                "Previous heading: H" +error.previousHeadingLevel + ": "  + error.seenHeadingText +  "</br>" 
-                );
+            errors.forEach((error, i) => result +=
+                "Error " + (i + 1) + "</br>" +
+                "Error on : <i>H" + error.seenHeadingLevel + " " + error.seenHeadingText + "</i></br>" +
+                "Expected heading level: <i>H" + error.expectedHeadingLevel + "</i></br>" +
+                "Previous heading: <i>H" + error.previousHeadingLevel + " " + error.seenHeadingText + "</i></br>"
+            );
 
             if (result == "") {
                 result = "No accessibility issues found"
                 CustomElement.setValue("Validated - No headings issues");
             }
-            else {                
+            else {
                 CustomElement.setValue(null);
             }
             return result;
