@@ -68,9 +68,10 @@
                     
                 const height = Math.ceil($("result").height());
                 CustomElement.setHeight(height);
-                }                
-            });
-            CustomElement.observeElementChanges(["content"], (changedElementCodenames) => {
+                }
+
+                CustomElement.observeElementChanges(["content"], (changedElementCodenames) => {
+                    console.log("element changed")
                     deliveryClient
                         .item(_context.item.codename)
                         .elementsParameter(["content"])
@@ -88,6 +89,7 @@
                         CustomElement.setHeight(height);
                     }
                 });
+            });
         });
 
         function getHeadingLevel(heading) {
