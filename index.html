@@ -28,7 +28,7 @@
         <div class="ui grid">
             <div class="ui sixteen column">
                 <div id="content" style="display:none">No content found</div>
-                <p id="result"></p>
+                <p id="result">&nbsp;</p>
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@
                 const height = Math.ceil($("result").height());
                 CustomElement.setHeight(height);
                 }
-                
+
             CustomElement.init((element, _context) => {
                 config = element.config || {};
                 elementName = config.fieldname;
@@ -69,8 +69,6 @@
                     .then(response => {
                         processData(response)
                     });
-
-
 
                 CustomElement.observeElementChanges(["content"], (changedElementCodenames) => {
                     deliveryClient
@@ -107,10 +105,6 @@
             var previousHeadingLevel = h1included ? 1 : 0;
             var previousHeadingText = "No headings yet";
 
-            if (headings.length < 1) {
-                errors.push("No headings detected");
-                return errors;
-            }
 
             for (x = 0; x < headings.length; x++) {
                 var currentHeadingLevel = getHeadingLevel(headings[x]);
