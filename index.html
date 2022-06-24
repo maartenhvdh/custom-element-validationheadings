@@ -111,12 +111,7 @@
         function printObj(obj) {
             var string = '';
             for (var prop in obj) {
-                if (typeof obj[prop] == 'string') {
-                    string += prop + ': ' + obj[prop] + '; </br>';
-                }
-                else {
-                    string += prop + ': { </br>' + obj[prop] + '}';
-                }
+               string += prop + ': ' + obj[prop] + '; </br>';
             }
             return string;
         }
@@ -151,6 +146,9 @@
             if (result == "") {
                 result = "No accessibility issues found"
                 CustomElement.setValue("Validated - No headings issues");
+            }
+            else {                
+                CustomElement.setValue("");
             }
             return result;
         }
