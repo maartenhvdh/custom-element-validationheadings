@@ -4,30 +4,22 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title> POC - The Level Group</title>
+    <title> Custom Element - Accessibility Checker</title>
     <!-- Kentico Custom elements API-->
     <link rel="stylesheet" href="custom-element.css" />
-    <script src="https://app.kontent.ai/js-api/custom-element/v1/custom-element.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-
+    <script src="https://app.kontent.ai/js-api/custom-element/v1/custom-element.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
-
     <script type="text/javascript" src="https://unpkg.com/rxjs@6.4.0/bundles/rxjs.umd.min.js"></script>
     <script type="text/javascript"
         src="https://cdn.jsdelivr.net/npm/@kentico/kontent-delivery/_bundles/kontent-delivery.browser.umd.min.js"></script>
-
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.410.0.min.js"></script>
-    <style>
-
-    </style>
-
-
+    <style></style>
 </head>
 
 <body>
@@ -39,10 +31,8 @@
             </div>
         </div>
     </div>
-
-    </div>
+    
     <script>
-        
         const Kk = window['kontentDelivery'];
         const deliveryClient = new Kk.DeliveryClient({
             projectId: '5ba2a1a1-ad54-0100-77c6-5fd2886014f0',
@@ -56,8 +46,8 @@
         $(document).ready(function () {
             // Retrieves the landing page from your project
             deliveryClient
-                .item("this_is_wcag_headings_test")
-                .elementsParameter(['rich_text_content'])
+                .item("top_5_reasons_why_you_should_be_riding_a_bike_righ")
+                .elementsParameter(['content'])
                 .toPromise()
                 .then(response => {
                     processData(response)
@@ -87,8 +77,6 @@
             return parseInt(heading.tagName[1]);
         }
 
-
-
         function createError(expectedHeadingLevel, previousHeadingLevel, previousHeadingText, currentHeadingLevel, currentHeadingText) {
             var err = {};
             err.previousHeadingLevel = (previousHeadingLevel == 0) ? "no previous headings" : previousHeadingLevel;
@@ -100,9 +88,7 @@
             return err;
         }
 
-
-
-        function checkheadings(container) {            
+        function checkheadings(container) {
             container = container || 'body';
             var cont = document.querySelector(container);
             var headings = cont.querySelectorAll("h1, h2, h3, h4, h5, h6");
@@ -133,8 +119,6 @@
             /*document.getElementById('result').innerHTML = "Speech ready to play.";*/
             return result;
         }
-
     </script>
 </body>
-
 </html>
