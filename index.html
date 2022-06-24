@@ -37,7 +37,6 @@
         var h1included = false;
 
         $(document).ready(function () {
-
             CustomElement.init((element, _context) => {
                 config = element.config || {};
                 elementName = config.fieldname;
@@ -69,9 +68,9 @@
                     
                 const height = Math.ceil($("result").height());
                 CustomElement.setHeight(height);
-                }
-
-                CustomElement.observeElementChanges(["content"], (changedElementCodenames) => {
+                }                
+            });
+            CustomElement.observeElementChanges(["content"], (changedElementCodenames) => {
                     deliveryClient
                         .item(_context.item.codename)
                         .elementsParameter(["content"])
@@ -89,7 +88,6 @@
                         CustomElement.setHeight(height);
                     }
                 });
-            });
         });
 
         function getHeadingLevel(heading) {
