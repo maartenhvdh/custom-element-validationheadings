@@ -42,22 +42,8 @@
 
     </div>
     <script>
-        $(document).ready(function () {
-            CustomElement.setHeight(150);
-            checkheadings();
-            CustomElement.observeElementChanges(["rich_text_content"], (changedElementCodenames) => {
-                checkheadings();
-            });
-        });
-
-        function getHeadingLevel(heading) {
-            return parseInt(heading.tagName[1]);
-        }
-
         
-        // Initializes the Delivery JS SDK
         const Kk = window['kontentDelivery'];
-
         const deliveryClient = new Kk.DeliveryClient({
             projectId: '5ba2a1a1-ad54-0100-77c6-5fd2886014f0',
             previewApiKey: 'ew0KICAiYWxnIjogIkhTMjU2IiwNCiAgInR5cCI6ICJKV1QiDQp9.ew0KICAianRpIjogIjNiMjE3MGM4OWVjYzRlY2FhY2ExODk5ODY0MGIwMmYyIiwNCiAgImlhdCI6ICIxNjQ5ODYzODU4IiwNCiAgImV4cCI6ICIxOTk1NDYzODU4IiwNCiAgInZlciI6ICIxLjAuMCIsDQogICJwcm9qZWN0X2lkIjogIjViYTJhMWExYWQ1NDAxMDA3N2M2NWZkMjg4NjAxNGYwIiwNCiAgImF1ZCI6ICJwcmV2aWV3LmRlbGl2ZXIua2VudGljb2Nsb3VkLmNvbSINCn0.9LXtA1L3KlHI_Elv-lJCimcHZqybNddW8PgsQVIimVQ',
@@ -66,6 +52,42 @@
                 waitForLoadingNewContent: true
             }
         });
+
+        $(document).ready(function () {
+            // Retrieves the landing page from your project
+            deliveryClient
+                .item("this_is_wcag_headings_test")
+                .elementsParameter(['rich_text_content'])
+                .toPromise()
+                .then(response => {
+                    processData(response)
+                });
+
+            function processData(response) {
+                const text = response.item.rich_text_content.value;
+                checkheadings(text)
+            }
+            CustomElement.observeElementChanges(["rich_text_content"], (changedElementCodenames) => {
+                deliveryClient
+                    .item("this_is_wcag_headings_test")
+                    .elementsParameter(['rich_text_content'])
+                    .toPromise()
+                    .then(response => {
+                        processData(response)
+                    });
+
+                function processData(response) {
+                    const text = response.item.rich_text_content.value;
+                    checkheadings(text)
+                }
+            });
+        });
+
+        function getHeadingLevel(heading) {
+            return parseInt(heading.tagName[1]);
+        }
+
+
 
         function createError(expectedHeadingLevel, previousHeadingLevel, previousHeadingText, currentHeadingLevel, currentHeadingText) {
             var err = {};
@@ -77,15 +99,12 @@
 
             return err;
         }
-        
 
-        function checkheadings() {
-            
-            const document = deliveryClient.item("this_is_wcag_headings_test")
-                .elementsParameter(['rich_text_content'])
-                .toPromise();
-            
-            var cont = document.querySelector(document.item.rich_text_content.value);
+
+
+        function checkheadings(container) {            
+            container = container || 'body';
+            var cont = document.querySelector(container);
             var headings = cont.querySelectorAll("h1, h2, h3, h4, h5, h6");
             var errors = [];
             var previousHeadingLevel = 0;
