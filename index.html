@@ -43,8 +43,6 @@
                 elementName = config.fieldname;
                 h1included = config.h1included;
                 previewApiKey = config.previewApiKey;
-                const height = Math.ceil($("html").height());
-                CustomElement.setHeight(height);
 
                 const Kk = window['kontentDelivery'];
                 const deliveryClient = new Kk.DeliveryClient({
@@ -68,6 +66,9 @@
                     const text = response.item.content.value;
                     document.getElementById('content').innerHTML = text;
                     document.getElementById('result').innerHTML = checkheadings();
+                    
+                const height = Math.ceil($("result").height());
+                CustomElement.setHeight(height);
                 }
 
                 CustomElement.observeElementChanges(["content"], (changedElementCodenames) => {
@@ -130,15 +131,15 @@
                 previousHeadingText = currentHeadingText;
             }
 
-            result = "<strong>Accessibility issues found</strong></br>"
+            result = "<strong>Accessibility issues found:</strong></br>"
             errors.forEach((error, i) => result +=
-                "Error " + (i + 1) + "</br>" +
+                "Heading order error " + (i + 1) + "</br>" +
                 "Error on : <i>H" + error.seenHeadingLevel + " " + error.seenHeadingText + "</i></br>" +
                 "Expected heading level: <i>H" + error.expectedHeadingLevel + "</i></br>" +
-                "Previous heading: <i>H" + error.previousHeadingLevel + " " + error.seenHeadingText + "</i></br>"
+                "Previous heading: <i>H" + error.previousHeadingLevel + " " + error.seenHeadingText + "</i></br></br>"
             );
 
-            if (result == "") {
+            if (result == "<strong>Accessibility issues found:</strong></br>") {
                 result = "No accessibility issues found"
                 CustomElement.setValue("Validated - No headings issues");
             }
