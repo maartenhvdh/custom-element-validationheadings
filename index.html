@@ -27,51 +27,32 @@
     <div class="ui container">
         <div class="ui grid">
             <div class="ui sixteen column">
-                <div id="content">No content found</div>
+                <div id="content" style="display:none">No content found</div>
                 <p id="result"></p>
             </div>
         </div>
     </div>
 
     <script>
-        const Kk = window['kontentDelivery'];
-        const deliveryClient = new Kk.DeliveryClient({
-            projectId: '5ba2a1a1-ad54-0100-77c6-5fd2886014f0',
-            previewApiKey: 'ew0KICAiYWxnIjogIkhTMjU2IiwNCiAgInR5cCI6ICJKV1QiDQp9.ew0KICAianRpIjogIjNiMjE3MGM4OWVjYzRlY2FhY2ExODk5ODY0MGIwMmYyIiwNCiAgImlhdCI6ICIxNjQ5ODYzODU4IiwNCiAgImV4cCI6ICIxOTk1NDYzODU4IiwNCiAgInZlciI6ICIxLjAuMCIsDQogICJwcm9qZWN0X2lkIjogIjViYTJhMWExYWQ1NDAxMDA3N2M2NWZkMjg4NjAxNGYwIiwNCiAgImF1ZCI6ICJwcmV2aWV3LmRlbGl2ZXIua2VudGljb2Nsb3VkLmNvbSINCn0.9LXtA1L3KlHI_Elv-lJCimcHZqybNddW8PgsQVIimVQ',
-            globalQueryConfig: {
-                usePreviewMode: true, // Queries the Delivery Preview API.
-                waitForLoadingNewContent: true
-            }
-        });
-
+        var h1included = false;
         $(document).ready(function () {
-            // Retrieves the landing page from your project
-            deliveryClient
-                .item("top_5_reasons_why_you_should_be_riding_a_bike_righ")
-                .elementsParameter(['content'])
-                .toPromise()
-                .then(response => {
-                    processData(response)
+            CustomElement.init((element, _context) => {
+                config = element.config || {};
+                elementName = config.fieldname;
+                h1included = config.h1included;
+
+                CustomElement.setHeight(150);
+                CustomElement.getElementValue(elementName, (value) => {
+                    textEntry.value = value
+                    speakText();
+                });
+                CustomElement.observeElementChanges([elementName], (changedElementCodenames) => {
+                    CustomElement.getElementValue(elementName, (value) => {
+                        content.value = value                        
+                        content.value = checkheadings();
+                    });
                 });
 
-            function processData(response) {
-                const text = response.item.content.value;
-                checkheadings(text)
-            }
-            CustomElement.observeElementChanges(["content"], (changedElementCodenames) => {
-                deliveryClient
-                    .item("top_5_reasons_why_you_should_be_riding_a_bike_righ")
-                    .elementsParameter(['content'])
-                    .toPromise()
-                    .then(response => {
-                        processData(response)
-                    });
-
-                function processData(response) {
-                    const text = response.item.content.value;
-                    console.log(text)
-                    document.getElementById('content').innerHTML = text;
-                }
             });
         });
 
@@ -90,12 +71,24 @@
             return err;
         }
 
-        function checkheadings(container) {
-            container = container || 'body';
+        function printObj(obj) {
+                var string = '';  
+                for(var prop in obj) {
+                    if(typeof obj[prop] == 'string') {
+                        string+= prop + ': ' + obj[prop]+'; </br>';
+                    }
+                    else {
+                        string+= prop + ': { </br>' + obj[prop] + '}';
+                    }
+                }  
+                return string;
+            }
+
+        function checkheadings() {
             var cont = document.querySelector('#content');
             var headings = cont.querySelectorAll("h1, h2, h3, h4, h5, h6");
             var errors = [];
-            var previousHeadingLevel = 0;
+            var previousHeadingLevel = h1included ? 0 : 1;
             var previousHeadingText = "Document Start - no headings yet";
 
             if (headings.length < 1) {
@@ -108,17 +101,21 @@
                 var currentHeadingText = headings[x].textContent;
                 var expectedHeadingLevel = previousHeadingLevel + 1;
                 if (currentHeadingLevel > expectedHeadingLevel) {
-                    //errors.push("H" + expectedLevel + " skipped. Previous correct heading was H" + previousHeadingLevel + " containing text:" + previousHeadingText + ". Unexpected H" + currentHeadingLevel + " text: " + currentHeadingText);
-
                     errors.push(createError(expectedHeadingLevel, previousHeadingLevel, previousHeadingText, currentHeadingLevel, currentHeadingText));
-
                     continue;
                 }
                 previousHeadingLevel = currentHeadingLevel;
                 previousHeadingText = currentHeadingText;
             }
 
-            /*document.getElementById('result').innerHTML = "Speech ready to play.";*/
+            result =  ""          
+            errors.forEach(error => result += printObj(error));
+            
+            if (result ==  "")
+            {
+                result = "No accessibility issues found"
+                CustomElement.setValue("Validated - No headings issues");
+            }
             return result;
         }
     </script>
