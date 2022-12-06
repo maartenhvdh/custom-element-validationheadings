@@ -38,7 +38,7 @@
         $(document).ready(function () {
             function processData(response) {
                 console.log(response)
-                    const text = response.item.elements.content.value;
+                    const text = response.data.item.elements.content.value;
                     document.getElementById('content').innerHTML = text;
                     document.getElementById('result').innerHTML = checkheadings();
                     
