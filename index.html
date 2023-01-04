@@ -38,13 +38,13 @@
         $(document).ready(function () {
             function processData(response) {
                 console.log(response)
-                    const text = response.data.item.elements.content.value;
-                    document.getElementById('content').innerHTML = text;
-                    document.getElementById('result').innerHTML = checkheadings();
-                    
+                const text = response.data.item.elements.content.value;
+                document.getElementById('content').innerHTML = text;
+                document.getElementById('result').innerHTML = checkheadings();
+
                 const height = Math.ceil($("result").height());
                 CustomElement.setHeight(height);
-                }
+            }
 
             CustomElement.init((element, _context) => {
                 config = element.config || {};
@@ -72,15 +72,16 @@
                     });
 
                 CustomElement.observeElementChanges(["content"], (changedElementCodenames) => {
-                    deliveryClient
-                        .item(_context.item.codename)
-                        .languageParameter(_context.variant.codename)
-                        .elementsParameter(["content"])
-                        .toPromise()
-                        .then(response => {
-                            processData(response)
-                        });
-
+                    setTimeout(function () {
+                        deliveryClient
+                            .item(_context.item.codename)
+                            .languageParameter(_context.variant.codename)
+                            .elementsParameter(["content"])
+                            .toPromise()
+                            .then(response => {
+                                processData(response)
+                            });
+                    }, 3000);
                 });
             });
         });
@@ -120,12 +121,12 @@
                 previousHeadingText = currentHeadingText;
             }
 
-            result = "<strong>Accessibility issues found:</strong></br>"
+            result = "<strong>" + errors.length + " accessibility issues found:</strong></br>"
             errors.forEach((error, i) => result +=
-                "Heading order error " + (i + 1) + "</br>" +
-                "Error on : <i>H" + error.seenHeadingLevel + " " + error.seenHeadingText + "</i></br>" +
-                "Expected heading level: <i>H" + error.expectedHeadingLevel + "</i></br>" +
-                "Previous heading: <i>H" + error.previousHeadingLevel + " " + error.seenHeadingText + "</i></br></br>"
+                "Error number " + (i + 1) + "</br>" +
+                "Error on heading : <i>H" + error.seenHeadingLevel + " " + error.seenHeadingText + "</i></br>" +
+                "Previous heading: <i>H" + error.previousHeadingLevel + " " + error.seenHeadingText + "</i></br></br>" +
+                "Expected heading level: <i>H" + error.expectedHeadingLevel + "</i></br>"
             );
 
             if (result == "<strong>Accessibility issues found:</strong></br>") {
