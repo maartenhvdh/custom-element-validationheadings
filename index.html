@@ -52,6 +52,7 @@
                 h1included = config.h1included;
                 previewApiKey = config.previewApiKey;
                 console.log(_context)
+                console.log(_context.projectId)
                 const Kk = window['kontentDelivery'];
                 const deliveryClient = new Kk.DeliveryClient({
                     projectId: _context.projectId,
@@ -61,6 +62,7 @@
                         waitForLoadingNewContent: true
                     }
                 });
+                console.log(deliveryClient)
                 // Retrieves the landing page from your project
                 deliveryClient
                     .item(_context.item.codename)
