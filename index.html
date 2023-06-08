@@ -55,7 +55,7 @@
                 console.log(_context.projectId)
                 const Kk = window['kontentDelivery'];
                 const deliveryClient = new Kk.DeliveryClient({
-                    projectId: projectID,
+                    projectId: _context.projectId,
                     previewApiKey: previewApiKey,
                     globalQueryConfig: {
                         usePreviewMode: true, // Queries the Delivery Preview API.
