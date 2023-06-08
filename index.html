@@ -51,7 +51,7 @@
                 elementName = config.fieldname;
                 h1included = config.h1included;
                 previewApiKey = config.previewApiKey;
-
+                console.log(_context)
                 const Kk = window['kontentDelivery'];
                 const deliveryClient = new Kk.DeliveryClient({
                     projectId: _context.projectId,
@@ -125,8 +125,8 @@
             errors.forEach((error, i) => result +=
                 "Error number " + (i + 1) + "</br>" +
                 "Error on heading : <i>H" + error.seenHeadingLevel + " " + error.seenHeadingText + "</i></br>" +
-                "Previous heading: <i>H" + error.previousHeadingLevel + " " + error.seenHeadingText + "</i></br></br>" +
-                "Expected heading level: <i>H" + error.expectedHeadingLevel + "</i></br>"
+                "Previous heading: <i>H" + error.previousHeadingLevel + " " + error.seenHeadingText + "</i></br>" +
+                "Expected heading level: <i>H" + error.expectedHeadingLevel + "</i></br></br>"
             );
 
             if (result == "<strong>Accessibility issues found:</strong></br>") {
