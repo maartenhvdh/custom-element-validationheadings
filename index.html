@@ -37,7 +37,6 @@
 
         $(document).ready(function () {
             function processData(response) {
-                console.log(response)
                 const text = response.item.content.value;
                 document.getElementById('content').innerHTML = text;
                 document.getElementById('result').innerHTML = checkheadings();
@@ -51,8 +50,6 @@
                 elementName = config.fieldname;
                 h1included = config.h1included;
                 previewApiKey = config.previewApiKey;
-                console.log(_context)
-                console.log(_context.projectId)
                 const Kk = window['kontentDelivery'];
                 const deliveryClient = new Kk.DeliveryClient({
                     projectId: _context.projectId,
@@ -62,7 +59,7 @@
                         waitForLoadingNewContent: false
                     }
                 });
-                console.log(deliveryClient)
+                
                 // Retrieves the landing page from your project
                 deliveryClient
                     .item(_context.item.codename)
