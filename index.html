@@ -55,8 +55,9 @@
                 previewApiKey = config.previewApiKey;
                 console.log(_context)
                 console.log(_context.projectId)
-                const Kk = window['kontentDelivery'];
-                const deliveryClient = new Kk.createDeliveryClient({
+                var KontentDelivery = window['kontentDelivery'];
+
+                var deliveryClient = KontentDelivery.createDeliveryClient({
                     environmentId: _context.projectId,
                     previewApiKey: previewApiKey,
                     defaultQueryConfig: {
