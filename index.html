@@ -41,9 +41,7 @@
                 document.getElementById('content').innerHTML = text;
                 document.getElementById('result').innerHTML = checkheadings();
 
-                const height = Math.ceil($("result").height());
-                console.log(height)
-                CustomElement.setHeight(height + 100);
+                CustomElement.setHeight(300);
             }
 
             CustomElement.init((element, _context) => {
