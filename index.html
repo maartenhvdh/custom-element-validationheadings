@@ -127,12 +127,12 @@
                 "Expected heading level: <i>H" + error.expectedHeadingLevel + "</i></br></br>"
             );
 
-            if (result == "<strong>Accessibility issues found:</strong></br>") {
-                CustomElement.setValue(null);
-            }
-            else {
+            if (errors.length == 0) {
                 result = "No accessibility issues found"
                 CustomElement.setValue("Validated - No headings issues");
+            }
+            else {
+                CustomElement.setValue(null);
             }
             return result;
         }
