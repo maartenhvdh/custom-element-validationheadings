@@ -128,11 +128,11 @@
             );
 
             if (result == "<strong>Accessibility issues found:</strong></br>") {
-                result = "No accessibility issues found"
-                CustomElement.setValue("Validated - No headings issues");
+                CustomElement.setValue(null);
             }
             else {
-                CustomElement.setValue(null);
+                result = "No accessibility issues found"
+                CustomElement.setValue("Validated - No headings issues");
             }
             return result;
         }
