@@ -64,7 +64,7 @@
                 deliveryClient
                     .item(_context.item.codename)
                     .languageParameter(_context.variant.codename)
-                    .elementsParameter(["body"])
+                    .elementsParameter(["content"])
                     .toPromise()
                     .then(response => {
                         processData(response)
