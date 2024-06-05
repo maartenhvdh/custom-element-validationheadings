@@ -17,7 +17,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/rxjs@6.4.0/bundles/rxjs.umd.min.js"></script>
     <script type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/@kentico/kontent-delivery/_bundles/kontent-delivery.browser.umd.min.js"></script>
+        src="https://cdn.jsdelivr.net/npm/@kontent-ai/delivery-sdk@latest/dist/bundles/kontent-delivery.umd.min.js"></script>
     <style></style>
 </head>
 
@@ -37,8 +37,7 @@
 
         $(document).ready(function () {
             function processData(response) {
-                console.log(response)
-                const text = response.item.content.value;
+                const text = response.data.item.body.value;
                 document.getElementById('body').innerHTML = text;
                 document.getElementById('result').innerHTML = checkheadings();
 
@@ -52,14 +51,13 @@
                 previewApiKey = config.previewApiKey;
                 const Kk = window['kontentDelivery'];
                 const deliveryClient = new Kk.DeliveryClient({
-                    projectId: _context.projectId,
+                    environmentId: _context.projectId,
                     previewApiKey: previewApiKey,
-                    globalQueryConfig: {
-                        usePreviewMode: true, // Queries the Delivery Preview API.
-                        waitForLoadingNewbody: false
+                    defaultQueryConfig: {
+                        usePreviewMode: true
                     }
                 });
-                
+
                 // Retrieves the landing page from your project
                 deliveryClient
                     .item(_context.item.codename)
