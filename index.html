@@ -65,6 +65,8 @@
                     .elementsParameter(["body"])
                     .toPromise()
                     .then(response => {
+                        console.log(_context)
+                        console.log(response)
                         processData(response)
                     });
 
