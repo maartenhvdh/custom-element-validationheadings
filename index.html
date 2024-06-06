@@ -37,7 +37,7 @@
 
         $(document).ready(function () {
             function processData(response) {
-                const text = response.data.item.body.value;
+                const text = response.data.item.elements.body.value;
                 document.getElementById('body').innerHTML = text;
                 document.getElementById('result').innerHTML = checkheadings();
 
@@ -65,8 +65,6 @@
                     .elementsParameter(["body"])
                     .toPromise()
                     .then(response => {
-                        console.log(_context)
-                        console.log(response)
                         processData(response)
                     });
 
