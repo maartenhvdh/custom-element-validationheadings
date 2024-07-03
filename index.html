@@ -62,18 +62,18 @@
                 deliveryClient
                     .item(_context.item.codename)
                     .languageParameter(_context.variant.codename)
-                    .elementsParameter(["body"])
+                    .elementsParameter(["content"])
                     .toPromise()
                     .then(response => {
                         processData(response)
                     });
 
-                CustomElement.observeElementChanges(["body"], (changedElementCodenames) => {
+                CustomElement.observeElementChanges(["content"], (changedElementCodenames) => {
                     setTimeout(function () {
                         deliveryClient
                             .item(_context.item.codename)
                             .languageParameter(_context.variant.codename)
-                            .elementsParameter(["body"])
+                            .elementsParameter(["content"])
                             .toPromise()
                             .then(response => {
                                 processData(response)
